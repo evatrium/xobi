@@ -82,15 +82,20 @@ export const createXobi = (connect, use) => state => {
                 enumerable: true,
                 get: () => internal,
                 set(value) {
+
                     if (value === internal) return;
 
                     if (key[0] == '$') return (internal = value);
 
                     if (isObj(internal) && isObj(value)) return deepAssign(suspect[key], value);
 
-                    internal = value, _paths[path] = suspect.$xobi.paths[path] = true;
+                    internal = value;
 
-                    base_notify(), suspect.$notify();
+                    _paths[path] = suspect.$xobi.paths[path] = true;
+
+                    base_notify();
+
+                    suspect.$notify();
                 }
             });
         }
