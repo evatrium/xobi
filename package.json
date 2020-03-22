@@ -1,6 +1,6 @@
 {
   "name": "xobi",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Mini observable object",
   "repository": {
     "type": "git",
