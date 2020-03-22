@@ -47,8 +47,6 @@ export const createXobi = (connect, use) => state => {
                 !isFunc(suspect[curr]) ? (acc[curr] = (isObj(suspect[curr]) && suspect[curr].$xobi)
                     ? suspect[curr].$getState() : suspect[curr], acc) : acc, {}),
 
-            toString: () => suspect.getState(),
-
             $merge: update => (isObj(update) && deepAssign(suspect, update), promise),
 
             $select: (selections, _xobiCopy = {}) => (
