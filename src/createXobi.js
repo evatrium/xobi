@@ -14,8 +14,10 @@ const isObj = thing => typeof thing === 'object' && !Array.isArray(thing),
 
     deepAssign = (t, p) => (keys(p).map(k => ((isObj(t[k]) && isObj(p[k])) ? deepAssign(t[k], p[k]) : t[k] = p[k])), t),
 
-    Subie = (subs = [], _unsub = it => subs.splice(subs.indexOf(it) >>> 0, 1)) =>
-        [it => ((subs.push(it), () => _unsub(it))), (...data) => subs.slice().map(f => (f(...data)))];
+    Subie = (subs = [], _unsub = it => subs.splice(subs.indexOf(it) >>> 0, 1)) => [
+        it => ((subs.push(it), () => _unsub(it))),
+        (...data) => subs.slice().map(f => (f(...data)))
+    ];
 
 export const createXobi = (connect, use) => state => {
 
