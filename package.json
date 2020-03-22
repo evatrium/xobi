@@ -1,6 +1,6 @@
 {
   "name": "xobi",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Mini observable object",
   "repository": {
     "type": "git",
@@ -17,12 +17,18 @@
     "preact.js",
     "createObi.js"
   ],
-  "keywords": ["state", "observable", "preact", "connect", "hook"],
+  "keywords": [
+    "state",
+    "observable",
+    "preact",
+    "connect",
+    "hook"
+  ],
   "scripts": {
     "start": "rollup -c -w --environment project:demo",
     "build": "rollup -c --environment project:lib",
     "test": "jest --config config/jest.js",
-    "test:watch" : "jest --config config/jest.js --watch"
+    "test:watch": "jest --config config/jest.js --watch"
   },
   "devDependencies": {
     "@babel/core": "^7.8.7",
