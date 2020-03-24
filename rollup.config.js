@@ -1,12 +1,11 @@
-import {config} from "./config/rollup";
+import config from 'rollup-configured';
 
 export default config({
     "project": {
         "demo": {
-            "preset": "dev",
             "input": "demo/src/index.js",
             "html": "demo/src/index.html",
-            "output": "demo/build"
+            "output": "demo/build",
         },
         "lib": {
             "preset": "lib",

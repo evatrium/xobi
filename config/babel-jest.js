@@ -1,5 +1,5 @@
 const babelJest = require('babel-jest');
-const createConfig = require('./babel');
+const createConfig = require('rollup-configured/babel-config.js');
 
 const config = createConfig();
 

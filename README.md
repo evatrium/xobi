@@ -234,6 +234,7 @@ there are still some small nuances that exist with it that end up not setting it
 Object.defineProperty provides when solely detecting object property changes. Not to mention, if you're worried about 
 browser support, there is only a partial polyfill for Proxy that does not cover all bases for legacy browsers. 
 
+Here is the polyfill for proxy in case you're interested in messing around with it :) https://github.com/GoogleChrome/proxy-polyfill
 ### License
 
 [MIT]
