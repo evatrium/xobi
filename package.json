@@ -31,16 +31,37 @@
     "test": "jest --config config/jest.js",
     "test:watch": "jest --config config/jest.js --watch"
   },
-  "dependencies": {
-    "preact": "^10.3.4"
+  "rollupConfig": {
+    "project": {
+      "demo": {
+        "input": "demo/src/index.js",
+        "html": "demo/src/index.html",
+        "output": "demo/build"
+      },
+      "lib": {
+        "preset": "lib",
+        "sourcemap": false,
+        "input": [
+          "src/index.js",
+          "src/preact.js"
+        ],
+        "output": ".",
+        "external": [
+          "preact",
+          "preact/hooks",
+          "preact/compat"
+        ]
+      }
+    }
   },
   "devDependencies": {
+    "preact": "*",
     "babel-jest": "^25.1.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-preact-pure": "^2.0.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^25.1.0",
     "jest-environment-jsdom-sixteen": "^1.0.3",
-    "rollup-configured": "0.0.9"
+    "rollup-configured": "0.0.12"
   }
 }

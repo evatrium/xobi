@@ -23,9 +23,9 @@ let $state = xobi({
     $i: 'will not trigger update when i change', 
     count:0,
     some: {
-        count:0,
         nested: 'value',
-        other: 'nested value'
+        other: 'nested value',
+        count:0,
     },
 });
 
@@ -60,12 +60,6 @@ const Counter = () => {
 
     nested.$use(); // will rerender when changes happen on the "nested" branch only
 
-    // or to listen to any change on any branch, pass true to $use
-    // state.$use(true)
-
-    // or select specific property paths to listen to
-    // state.$use(['nested.foo', 'nested.bar'])
-
     return (
         <div>
             <h1>{nested.count}</h1>
@@ -75,6 +69,29 @@ const Counter = () => {
         </div>
     )
 };
+
+// to listen to any change on any branch, pass true to $use
+const AllState = () => {
+    state.$use(true);
+    return(
+        <pre>
+            {JSON.stringify(state.$getState(), null, '\t')}
+        </pre>
+    )
+};
+
+// select specific property paths to listen to 
+const Selected = () => {
+    state.$use(['count', 'nested.count']);
+    const {count, nested: {count: nestedCount}} = state;
+    return(
+        <div>
+            <h1>Count : {count}</h1>
+            <h1>Nested Count : {nestedCount}</h1>
+        </div>
+    )
+}
+
 
 //connect class component with $connect. 
 const ConnectedCounter = state.$connect('count')(class extends Component{

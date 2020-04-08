@@ -1,4 +1,4 @@
-const isObj = thing => typeof thing === 'object' && !Array.isArray(thing),
+const isObj = thing => Object.prototype.toString.call(thing) === '[object Object]',
 
     isFunc = thing => typeof thing === 'function',
 
@@ -87,7 +87,7 @@ export const createXobi = (connect, use) => state => {
 
                     if (key[0] == '$') return (internal = value);
 
-                    if (isObj(internal) && isObj(value)) return deepAssign(suspect[key], value);
+                    if (isObj(internal) && internal.$xobi && isObj(value)) return deepAssign(suspect[key], value);
 
                     internal = value;
 
@@ -103,3 +103,6 @@ export const createXobi = (connect, use) => state => {
     };
     return xobify(state);
 };
+
+
+

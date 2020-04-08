@@ -6,8 +6,10 @@ let newObj = () => Object.create(null),
     useForceUpdate = ([, set] = useState(newObj())) => useCallback(() => set(newObj()), [set]),
     use = suspect => selections => {
         let fu = useForceUpdate(), useAnyChange = selections === true;
-        useEffect(() => (!useAnyChange && selections ? suspect.$select(selections) : suspect)[
-            useAnyChange ? '$onAnyChange' : '$onChange'](fu), []);
+        useEffect(() => {
+            return (!useAnyChange && selections ? suspect.$select(selections) : suspect)[
+                useAnyChange ? '$onAnyChange' : '$onChange'](fu)
+        }, []);
         return suspect;
     },
     connect = suspect => selections => Child => {

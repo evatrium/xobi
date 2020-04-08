@@ -22,30 +22,30 @@ const initialState = (count = 0) => ({
 
 let a = xobi({...initialState()});
 
-console.log(Object.keys(a))
+// console.log(Object.keys(a))
 
-for(let k in a){
-    console.log(k)
-}
+// for (let k in a) {
+//     console.log(k)
+// }
 
 a.$onAnyChange((paths) => {
-    console.log('any change', [...paths]);
+    // console.log('any change', [...paths]);
 });
 
 a.$onChange((paths) => {
-    console.log('a changed', [...paths])
+    // console.log('a changed', [...paths])
 
 });
 
 
 a.b.$onChange((paths) => {
-    console.log('b changed', [...paths])
+    // console.log('b changed', [...paths])
 
 });
 
 
 a.b.c.$onChange((paths) => {
-    console.log('c changed', [...paths])
+    // console.log('c changed', [...paths])
 });
 
 
@@ -88,19 +88,21 @@ const Counter = () => {
 };
 
 const App = () => {
+
+    const {a1} = a.$use(true);
+
     rendered++;
     console.log('rendered', rendered);
-    a.$use(true);
 
     return (
         <div>
             <h1>App</h1>
 
-            <h1>Count: {a.a1}</h1>
+            <h1>Count: {a1}</h1>
             <button onClick={() => {
                 count++;
-                a.$merge(initialState(count)).then(()=>{
-                    console.log('promise works?', )
+                a.$merge(initialState(count)).then(() => {
+                    console.log('promise works?',)
                 });
             }}>
                 inc
@@ -112,13 +114,14 @@ const App = () => {
                 Merge somethign
             </button>
             <pre>
-            {JSON.stringify(a.$getState(), null, '\t')}
-            </pre>
+             {JSON.stringify(a.$getState(), null, '\t')}
+             </pre>
             <Counter/>
             <Counter/>
             <Counter/>
         </div>
     )
+
 };
 
 render(<App/>, document.body);
