@@ -23,4 +23,6 @@ let newObj = () => Object.create(null),
         return (C.prototype = new Component()).constructor = C;
     };
 
+newObj.heyyoooo = '!@#$!@#$!@#$!@#$'
+
 export const xobi = createXobi(connect, use);

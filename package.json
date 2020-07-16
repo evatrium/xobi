@@ -26,8 +26,12 @@
   ],
   "scripts": {
     "start": "rollup -c -w --environment project:demo,preset:dev",
-    "build:demo": "rollup -c --environment project:demo,preset:build_app",
-    "build": "rollup -c --environment project:lib",
+    "start:react": "rollup -c -w --environment project:demo,preset:dev",
+    "build:demo": "rollup -c --environment project:demo_react,preset:build_app",
+    "build:index": "rollup -c --environment project:index",
+    "build:preact": "rollup -c --environment project:preact",
+    "build:react": "rollup -c --environment project:react",
+    "build": "yarn build:index && yarn build:preact && yarn build:react",
     "test": "jest --config config/jest.js",
     "test:watch": "jest --config config/jest.js --watch"
   },
@@ -38,11 +42,23 @@
         "html": "demo/src/index.html",
         "output": "demo/build"
       },
-      "lib": {
+      "demo_react": {
+        "input": "demo/src/index.react.js",
+        "html": "demo/src/index.html",
+        "output": "demo/build",
+        "pragma": "React.createElement",
+        "pragmaFrag": "React.Fragment"
+      },
+      "index": {
         "preset": "lib",
-        "sourcemap": false,
         "input": [
-          "src/index.js",
+          "src/index.js"
+        ],
+        "output": "."
+      },
+      "preact": {
+        "preset": "lib",
+        "input": [
           "src/preact.js"
         ],
         "output": ".",
@@ -51,8 +67,23 @@
           "preact/hooks",
           "preact/compat"
         ]
+      },
+      "react": {
+        "preset": "lib",
+        "input": [
+          "src/react.js"
+        ],
+        "output": ".",
+        "external": [
+          "react",
+          "react-dom"
+        ],
+        "pragma": "React.createElement",
+        "pragmaFrag": "React.Fragment"
       }
-    }
+    },
+
+    "sourcemap": false
   },
   "devDependencies": {
     "preact": "*",
@@ -62,6 +93,8 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^25.1.0",
     "jest-environment-jsdom-sixteen": "^1.0.3",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "rollup-configured": "0.0.13"
   }
 }

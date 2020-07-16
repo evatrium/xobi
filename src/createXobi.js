@@ -85,7 +85,7 @@ export const createXobi = (connect, use) => state => {
 
                     if (value === internal) return;
 
-                    if (key[0] == '$') return (internal = value);
+                    if (key[0] === '$') return (internal = value);
 
                     if (isObj(internal) && internal.$xobi && isObj(value)) return deepAssign(suspect[key], value);
 
