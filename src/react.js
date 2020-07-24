@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useState, useRef} from "react";
 import {createXobi} from "./createXobi";
 
 
@@ -22,10 +22,13 @@ let newObj = () => Object.create(null),
     useForceUpdate = ([, set] = useState(newObj())) => useCallback(() => set(newObj()), [set]),
     use = suspect => selections => {
         //eslint-disable-next-line react-hooks/rules-of-hooks
-        let fu = useForceUpdate(), useAnyChange = selections === true;
+        let fu = useForceUpdate(), useAnyChange = selections === true, isMounted = useRef(true);
+        useEffect(() => () => {
+            isMounted.current = false;
+        }, []);
         useEffect(() => {
             return (!useAnyChange && selections ? suspect.$select(selections) : suspect)[
-                useAnyChange ? '$onAnyChange' : '$onChange'](fu);
+                useAnyChange ? '$onAnyChange' : '$onChange'](() => isMounted && fu());
         }, []);
         return suspect;
     };
