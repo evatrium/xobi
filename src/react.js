@@ -28,7 +28,7 @@ let newObj = () => Object.create(null),
         }, []);
         useEffect(() => {
             return (!useAnyChange && selections ? suspect.$select(selections) : suspect)[
-                useAnyChange ? '$onAnyChange' : '$onChange'](() => isMounted && fu());
+                useAnyChange ? '$onAnyChange' : '$onChange'](() => isMounted.current && fu());
         }, []);
         return suspect;
     };
