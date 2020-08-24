@@ -23,7 +23,7 @@ const initialState = (count = 0) => ({
 let a = xobi({...initialState()});
 
 
-a.$connect()()
+// a.$connect()()
 
 // console.log(Object.keys(a))
 

@@ -102,6 +102,7 @@ describe('xobi', () => {
 
     });
 
+
     it('using $merge allows multiple properties to be set with one change update per branch, and ignores when no value changes',
         async () => {
 

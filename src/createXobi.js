@@ -36,8 +36,7 @@ export const createXobi = use => state => {
             $use: use && use(suspect),
 
             $connect: () => child => {
-                throw new Error('"xobi.$connect()" is depreciated. Use the "xobi.$use()" hook as described in the docs, or create your own connect function with it');
-                return child;
+                throw new Error('"xobi.$connect()" is depreciated. Use the "xobi.$use()" hook as described in the docs.');
             },
 
             $xobi: {paths: {}},

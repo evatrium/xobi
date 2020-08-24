@@ -42,6 +42,7 @@ a.$onChange((paths) => {
 });
 
 
+
 a.b.$onChange((paths) => {
     // console.log('b changed', [...paths])
 

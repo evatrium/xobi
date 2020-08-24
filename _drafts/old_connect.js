@@ -10,6 +10,7 @@ const connect = suspect => selections => Child => {
 };
 
 
+
 /* possible solution for connect function
 
 const connect = (component) => (props) => {
