@@ -1,6 +1,6 @@
 # xobi
 
-> all-in-on mini observable object, state management, hook and connect function
+> all-in-on mini observable object, state management and (p)react hook
 
 Obi extends the functionality of Objects to provide change detection.
 
