@@ -33,6 +33,7 @@
     "build:preact": "rollup -c --environment project:preact",
     "build:react": "rollup -c --environment project:react",
     "build": "yarn build:index && yarn build:preact && yarn build:react",
+    "test:react": "react-scripts test",
     "test": "jest --config config/jest.js",
     "test:watch": "jest --config config/jest.js --watch"
   },
@@ -40,7 +41,7 @@
     "project": {
       "demo": {
         "input": "demo/src/index.js",
-        "html": "demo/src/index.html",
+        "htmljs": "demo/src/html.js",
         "output": "demo/build"
       },
       "demo_react": {
@@ -86,15 +87,16 @@
     "sourcemap": false
   },
   "devDependencies": {
-    "preact": "*",
     "babel-jest": "^25.1.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-preact-pure": "^2.0.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^25.1.0",
     "jest-environment-jsdom-sixteen": "^1.0.3",
+    "preact": "*",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-scripts": "^3.4.3",
     "rollup-configured": "0.0.13"
   }
 }

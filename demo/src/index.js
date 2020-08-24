@@ -22,6 +22,9 @@ const initialState = (count = 0) => ({
 
 let a = xobi({...initialState()});
 
+
+a.$connect()()
+
 // console.log(Object.keys(a))
 
 // for (let k in a) {
@@ -47,6 +50,8 @@ a.b.$onChange((paths) => {
 a.b.c.$onChange((paths) => {
     // console.log('c changed', [...paths])
 });
+
+
 
 
 let rendered = 0;

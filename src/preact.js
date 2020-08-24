@@ -14,18 +14,8 @@ let newObj = () => Object.create(null),
                 useAnyChange ? '$onAnyChange' : '$onChange'](() => isMounted.current && fu())
         }, []);
         return suspect;
-    },
-    connect = suspect => selections => Child => {
-        let useAnyChange = selections === true;
-
-        function C() {
-            this.componentWillUnmount = (
-                !useAnyChange && selections ? suspect.$select(selections) : suspect
-            )[useAnyChange ? '$onAnyChange' : '$onChange'](() => this.setState(newObj()));
-            this.render = () => h(Child, this.props, this.props.children);
-        }
-
-        return (C.prototype = new Component()).constructor = C;
     };
 
-export const xobi = createXobi(connect, use);
+export const xobi = createXobi(use);
+export default xobi;
+

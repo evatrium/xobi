@@ -2,9 +2,9 @@
 
 > all-in-on mini observable object, state management, hook and connect function
 
-Obi extends the functionality of objects to provide change detection.
+Obi extends the functionality of Objects to provide change detection.
 
-Exports include optional preact integration with hook and connect function.
+Exports include preact and react integrations with $use hook.
 
 ## Installation 
 ```sh
@@ -14,20 +14,24 @@ npm install xobi --save
 ## Usage
 To create state who's properties you want to observe, pass an object to xobi and store the returned value to a variable.
 This adds non enumerable properties to the object, and its nested objects, which can be used to subscribe to changes.
+
+#### Vanilla JavaScript example
 ```js
 import {xobi} from 'xobi';
 
-let $state = xobi({
+const initialState = {
     foo: 'bar',
     arr: ['a', 'b', 'c'],
-    $i: 'will not trigger update when i change', 
+    $i: 'props starting with "$" will not trigger updates when value changes', 
     count:0,
     some: {
         nested: 'value',
         other: 'nested value',
         count:0,
     },
-});
+};
+
+let $state = xobi(initialState);
 
 $state.$onAnyChange((paths)=>{
     console.log('state updated!', paths)
@@ -35,55 +39,73 @@ $state.$onAnyChange((paths)=>{
 
 $state.count++;
 $state.some.count++;
-// updates are batched. logs once: 'state updated', ['count','some.count']
+// updates are batched. console logs once: 'state updated!', ['count','some.count']
 ```
 
-### With Preact
-
+### With (p)react
 ```js
-import {h,Component} from 'preact';
-import {xobi} from 'xobi/preact'; // some bundlers have the option to alias this ('xobi': 'xobi/preact')
+import {h, Component} from 'preact';
+import {xobi} from 'xobi/preact'; // also default exports available: (import xobi from 'xobi/preact'
+//import {xobi} from 'xobi/react'
 
-const state = xobi({
+const initialState = {
     hello: '', 
-    count:0, 
-    nested: { 
+    count: 0,
+    helloArray: ['hello-0'], 
+    nested: { // nested branch
         count:0, 
         foo: 'bar',
         baz: 'bang' 
     } 
-});
+};
+
+const state = xobi(initialState);
 
 const {nested} = state;
  
 const Counter = () => {
 
-    nested.$use(); // will rerender when changes happen on the "nested" branch only
+    const {count} = nested.$use(); // will rerender when changes happen on the "nested" branch only
 
     return (
         <div>
-            <h1>{nested.count}</h1>
-            <button onClick={() => nested.count++}>
+            <h1>{count}</h1>
+            <button 
+                onClick={() => nested.count++}
+                 // rule of thumb: "dot-walk" out from the object that the value belongs to
+                 // (nested.count++ not count++)
+                //  so the component can re-render when changes are detected
+                >
                 inc
             </button>
         </div>
     )
 };
 
-// to listen to any change on any branch, pass true to $use
+let helloCount = 0; 
+// to listen to any change on any nested branch, pass true to $use
 const AllState = () => {
-    state.$use(true);
+    const {helloArray} = state.$use(true);
     return(
-        <pre>
-            {JSON.stringify(state.$getState(), null, '\t')}
-        </pre>
+        <div>
+            <button onClick={() => {
+                // mutating arrays will not trigger updates (ex: state.helloArray.push(`hello-${helloCount++}`)
+                // instead, assign a copy of the array to a new array with the included value
+                state.helloArray = [...helloArray, `hello-${helloCount++}`]
+            }}>
+                add hello
+            </button>
+            <pre>
+                {JSON.stringify(state.$getState(), null, '\t')}
+            </pre>
+        </div>
     )
 };
 
 // select specific property paths to listen to 
-const Selected = () => {
-    state.$use(['count', 'nested.count']);
-    const {count, nested: {count: nestedCount}} = state;
+const Selected = () => {                                       // string dot notation
+    const {count, nested: {count: nestedCount}} = state.$use(['count', 'nested.count']);
+    // component will rerender only when state.count or state.nested.count values change
     return(
         <div>
             <h1>Count : {count}</h1>
@@ -92,18 +114,6 @@ const Selected = () => {
     )
 }
 
-
-//connect class component with $connect. 
-const ConnectedCounter = state.$connect('count')(class extends Component{
-    render(){
-     return (
-            <div>
-                <h1>{state.count}</h1>
-                <button onClick={() => state.count++}>inc</button>
-            </div>
-        )
-    }
-})
 ```
 #### Root level changes
 $onChange is a property that exists on all objects nested within the state tree.
@@ -180,6 +190,7 @@ some.other = 'update 2';
 //logs: state changed: ['some.nested', 'some.other']
 
 ```
+
 If the value being updated was originally created as an object, making an assignment to it with an object as a value 
 will automatically merge in the new properties while preserving other properties not being updated.
 
@@ -217,17 +228,25 @@ $state.$i = 'updated';
 ```
 Functions may be included on the state object.
 ```js
-let $state = xobi({
-    foo: 'bar',
-    getSetFoo: () =>{
-        api.getFoo().then(data=>{
-            $state.foo = data
+import {xobi} from 'xobi/preact';
+import {api} from './api';
+let $ = xobi({
+    foo: null,
+    fetching: false,
+    errorMessage: '',
+    getSetFoo: () => {
+        $.fetching = true
+        api.getFoo().then(data => {
+            $.$merge({ foo: data, fetching: false, errorMessage:'' })
+        }).catch((error)=>{
+             $.$merge({ foo: null, fetching: false, errorMessage: error })
         })
     }
 });
+export {$ as $fooApi}
 ```
 
-Call $getState to retrieve only the object state properties (for example: console logging or form submission purposes) 
+Call $getState to retrieve only a copy of the object state properties (for example: console logging or form submission purposes) 
 while excluding any non stateful properties like functions.  
 ```js
 console.log($state.$getState());

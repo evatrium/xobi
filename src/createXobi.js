@@ -19,7 +19,7 @@ const isObj = thing => Object.prototype.toString.call(thing) === '[object Object
         (...data) => subs.slice().map(f => (f(...data)))
     ];
 
-export const createXobi = (connect, use) => state => {
+export const createXobi = use => state => {
 
     let _paths = {},
 
@@ -35,7 +35,10 @@ export const createXobi = (connect, use) => state => {
 
             $use: use && use(suspect),
 
-            $connect: connect && connect(suspect),
+            $connect: () => child => {
+                throw new Error('"xobi.$connect()" is depreciated. Use the "xobi.$use()" hook as described in the docs, or create your own connect function with it');
+                return child;
+            },
 
             $xobi: {paths: {}},
 
