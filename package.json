@@ -1,6 +1,6 @@
 {
   "name": "xobi",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "description": "All-in-one mini observable object, global state management and (p)react hook",
   "repository": {
     "type": "git",
