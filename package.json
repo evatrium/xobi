@@ -1,102 +1,52 @@
 {
   "name": "xobi",
   "version": "1.1.1",
-  "description": "All-in-on mini observable object, state management and (p)react hook",
+  "description": "All-in-one mini observable object, global state management and (p)react hook",
   "repository": {
     "type": "git",
     "url": "https://github.com/iosio/xobi.git"
   },
   "license": "MIT",
   "main": "index.js",
-  "module": "index.js",
   "publishConfig": {
     "access": "public"
   },
   "files": [
     "index.js",
     "preact.js",
-    "react.js",
-    "createxObi.js"
+    "react.js"
   ],
   "keywords": [
     "state",
-    "observable",
+    "global state",
+    "observable object",
     "preact",
-    "connect",
+    "react",
     "hook"
   ],
   "scripts": {
-    "start": "rollup -c -w --environment project:demo,preset:dev",
-    "start:react": "rollup -c -w --environment project:demo,preset:dev",
-    "build:demo": "rollup -c --environment project:demo_react,preset:build_app",
-    "build:index": "rollup -c --environment project:index",
-    "build:preact": "rollup -c --environment project:preact",
-    "build:react": "rollup -c --environment project:react",
-    "build": "yarn build:index && yarn build:preact && yarn build:react",
-    "test:react": "react-scripts test",
-    "test": "jest --config config/jest.js",
-    "test:watch": "jest --config config/jest.js --watch"
+    "start": "wmr --public src",
+    "test": "react-scripts test",
+    "build": "npm run build:xobi && npm run build:xobi-preact && npm run build:xobi-react",
+    "build:xobi": "microbundle -i src/index.js -o ./index.js --compress --f modern --no-pkg-main --no-sourcemap",
+    "build:xobi-preact": "microbundle -i src/xobi-preact.js -o ./preact.js --compress --f modern --no-pkg-main --no-sourcemap --external preact/hooks",
+    "build:xobi-react": "microbundle -i src/xobi-react.js -o ./react.js --compress --f modern --no-pkg-main --no-sourcemap --external react"
   },
-  "rollupConfig": {
-    "project": {
-      "demo": {
-        "input": "demo/src/index.js",
-        "htmljs": "demo/src/html.js",
-        "output": "demo/build"
-      },
-      "demo_react": {
-        "input": "demo/src/index.react.js",
-        "html": "demo/src/index.html",
-        "output": "demo/build",
-        "pragma": "React.createElement",
-        "pragmaFrag": "React.Fragment"
-      },
-      "index": {
-        "preset": "lib",
-        "input": [
-          "src/index.js"
-        ],
-        "output": "."
-      },
-      "preact": {
-        "preset": "lib",
-        "input": [
-          "src/preact.js"
-        ],
-        "output": ".",
-        "external": [
-          "preact",
-          "preact/hooks",
-          "preact/compat"
-        ]
-      },
-      "react": {
-        "preset": "lib",
-        "input": [
-          "src/react.js"
-        ],
-        "output": ".",
-        "external": [
-          "react",
-          "react-dom"
-        ],
-        "pragma": "React.createElement",
-        "pragmaFrag": "React.Fragment"
-      }
-    },
-    "sourcemap": false
+  "alias": {
+    "react": "preact/compat",
+    "react-dom": "preact/compat"
   },
   "devDependencies": {
-    "babel-jest": "^25.1.0",
-    "enzyme": "^3.10.0",
-    "enzyme-adapter-preact-pure": "^2.0.0",
-    "identity-obj-proxy": "^3.0.0",
-    "jest": "^25.1.0",
-    "jest-environment-jsdom-sixteen": "^1.0.3",
-    "preact": "*",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-scripts": "^3.4.3",
-    "rollup-configured": "0.0.13"
-  }
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "microbundle": "^0.13.0",
+    "mwr": "^0.0.22",
+    "preact": "^10.5.8",
+    "preact-iso": "^0.2.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-scripts": "^4.0.1"
+  },
+  "dependencies": {}
 }
